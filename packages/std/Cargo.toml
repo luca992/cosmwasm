@@ -7,6 +7,7 @@ description = "Standard library for Wasm based smart contracts on Cosmos blockch
 repository = "https://github.com/scrtlabs/cosmwasm/tree/secret/packages/std"
 license = "Apache-2.0"
 readme = "README.md"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = ["stargate", "staking", "ibc3"]
