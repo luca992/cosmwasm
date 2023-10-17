@@ -27,6 +27,11 @@ pub struct TransactionInfo {
     /// using the pair (`env.block.height`, `env.transaction.index`).
     ///
     pub index: u32,
+    #[serde(default)]
+    /// The hash of the current transaction bytes.
+    /// aka txhash or transaction_id
+    /// hash = sha256(tx_bytes)
+    pub hash: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
@@ -50,7 +55,7 @@ pub struct BlockInfo {
     /// #         time: Timestamp::from_nanos(1_571_797_419_879_305_533),
     /// #         chain_id: "cosmos-testnet-14002".to_string(),
     /// #      },
-    /// #     transaction: Some(TransactionInfo { index: 3 }),
+    /// #     transaction: Some(TransactionInfo { index: 3, hash: "".to_string() }),
     /// #     contract: ContractInfo {
     /// #         address: Addr::unchecked("contract"),
     /// #         code_hash: "".to_string()
@@ -75,7 +80,7 @@ pub struct BlockInfo {
     /// #         time: Timestamp::from_nanos(1_571_797_419_879_305_533),
     /// #         chain_id: "cosmos-testnet-14002".to_string(),
     /// #     },
-    /// #     transaction: Some(TransactionInfo { index: 3 }),
+    /// #     transaction: Some(TransactionInfo { index: 3, hash: "".to_string() }),
     /// #     contract: ContractInfo {
     /// #         address: Addr::unchecked("contract"),
     /// #         code_hash: "".to_string()

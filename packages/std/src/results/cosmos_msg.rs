@@ -156,6 +156,7 @@ pub enum WasmMsg {
     /// This is translated to a [MsgInstantiateContract](https://github.com/CosmWasm/wasmd/blob/v0.16.0-alpha1/x/wasm/internal/types/tx.proto#L47-L61).
     /// `sender` is automatically filled with the current contract's address.
     Instantiate {
+        admin: Option<String>,
         code_id: u64,
         /// code_hash is the hex encoded hash of the code. This is used by Secret Network to harden against replaying the contract
         /// It is used to bind the request to a destination contract in a stronger way than just the contract address which can be faked
@@ -168,6 +169,33 @@ pub enum WasmMsg {
         /// A human-readbale label for the contract, must be unique across all contracts
         label: String,
     },
+    /// Migrates a given contracts to use new wasm code. Passes a MigrateMsg to allow us to
+    /// customize behavior.
+    ///
+    /// Only the contract admin (as defined in wasmd), if any, is able to make this call.
+    ///
+    /// This is translated to a [MsgMigrateContract](https://github.com/CosmWasm/wasmd/blob/v0.14.0/x/wasm/internal/types/tx.proto#L86-L96).
+    /// `sender` is automatically filled with the current contract's address.
+    Migrate {
+        contract_addr: String,
+        /// code_hash is the hex encoded hash of the **new** code. This is used by Secret Network to harden against replaying the contract
+        /// It is used to bind the request to a destination contract in a stronger way than just the contract address which can be faked
+        code_hash: String,
+        /// the code_id of the **new** logic to place in the given contract
+        code_id: u64,
+        /// msg is the json-encoded MigrateMsg struct that will be passed to the new code
+        #[derivative(Debug(format_with = "binary_to_string"))]
+        msg: Binary,
+    },
+    /// Sets a new admin (for migrate) on the given contract.
+    /// Fails if this contract is not currently admin of the target contract.
+    UpdateAdmin {
+        contract_addr: String,
+        admin: String,
+    },
+    /// Clears the admin on the given contract, so no more migration possible.
+    /// Fails if this contract is not currently admin of the target contract.
+    ClearAdmin { contract_addr: String },
 }
 
 #[cfg(feature = "stargate")]
@@ -188,7 +216,10 @@ pub enum VoteOption {
     NoWithVeto,
 }
 
+
 /// Shortcut helper as the construction of WasmMsg::Instantiate can be quite verbose in contract code.
+///
+/// When using this, `admin` is always unset. If you need more flexibility, create the message directly.
 pub fn wasm_instantiate(
     code_id: u64,
     code_hash: impl Into<String>,
@@ -198,6 +229,7 @@ pub fn wasm_instantiate(
 ) -> StdResult<WasmMsg> {
     let payload = to_binary(msg)?;
     Ok(WasmMsg::Instantiate {
+        admin: None,
         code_id,
         code_hash: code_hash.into(),
         msg: payload,
