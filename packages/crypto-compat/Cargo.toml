@@ -1,6 +1,6 @@
 [package]
 name = "cosmwasm-crypto"
-version = "1.1.10"
+version = "1.1.11"
 authors = ["SCRT Labs <info@scrtlabs.com>"]
 edition = "2021"
 description = "Compatability layer for contracts that want to use the git versions of the std fork with a patch"
