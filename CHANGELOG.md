@@ -6,6 +6,17 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.1.11] - 2023-10-18
+
+### Added
+
+- Add `WasmMsg::{Migrate, UpdateAdmin, ClearAdmin}` ([#19]).
+- Add `memo` to `IbcMsg::Transfer` ([#19]).
+- Add `env.transaction.hash` ([#19]).
+- Add `admin` to `WasmMsg::Instantiate` ([#19]).
+
+[#19]: https://github.com/scrtlabs/cosmwasm/pull/19
+
 ## [1.1.10] - 2023-05-08
 
 ### Fixed
@@ -15,7 +26,8 @@ and this project adheres to
 
 ### Changed
 
-- Change crates names back to support `crates.io`, while creating a compatability crates to support native libraries ([#17], [#20]).
+- Change crates names back to support `crates.io`, while creating a
+  compatability crates to support native libraries ([#17], [#20]).
 
 ### Added
 
@@ -23,6 +35,14 @@ and this project adheres to
 - Support for `gas_evaporate()` ([#13], [#14]).
 - Support for `FinalizeTx` ([#15], ([#18])).
 - Support for SecretVRF ([#16]).
+
+[#13]: https://github.com/scrtlabs/cosmwasm/pull/13
+[#14]: https://github.com/scrtlabs/cosmwasm/pull/14
+[#15]: https://github.com/scrtlabs/cosmwasm/pull/15
+[#16]: https://github.com/scrtlabs/cosmwasm/pull/16
+[#17]: https://github.com/scrtlabs/cosmwasm/pull/17
+[#18]: https://github.com/scrtlabs/cosmwasm/pull/18
+[#20]: https://github.com/scrtlabs/cosmwasm/pull/20
 
 ## [1.1.9] - 2022-12-06
 
@@ -822,21 +842,21 @@ and this project adheres to
   them more consistent with the behaviour of the Rust primitive types. Thank you
   [@yihuang] for bringing this up and for the great implementation. ([#853])
   1. `Uint128` got the new functions `checked_add`, `checked_sub`,
-      `checked_mul`, `checked_div`, `checked_div_euclid`, `checked_rem`,
-      `wrapping_add`, `wrapping_sub`, `wrapping_mul`, `wrapping_pow`,
-      `saturating_add`, `saturating_sub`, `saturating_mul` and `saturating_pow`
-      which match their equivalent in [u128] except that instead of `Option` the
-      checked methods return a `Result` with an `OverflowError` or
-      `DivideByZeroError` that carries a few debug information and can directly
-      be converted to `StdError`/`StdResult` by using the `?` operator.
+     `checked_mul`, `checked_div`, `checked_div_euclid`, `checked_rem`,
+     `wrapping_add`, `wrapping_sub`, `wrapping_mul`, `wrapping_pow`,
+     `saturating_add`, `saturating_sub`, `saturating_mul` and `saturating_pow`
+     which match their equivalent in [u128] except that instead of `Option` the
+     checked methods return a `Result` with an `OverflowError` or
+     `DivideByZeroError` that carries a few debug information and can directly
+     be converted to `StdError`/`StdResult` by using the `?` operator.
   2. `StdError::Underflow` and `StdError::underflow` were removed in favour of
-      `StdError::Overflow`. `StdError::DivideByZeroError` was added.
-  3. The `-` operator (`impl ops::Sub<Uint128> for Uint128`) was removed
-      because it returned a `StdResult` instead of panicking in the case of an
-      overflow. This behaviour was inconsistent with `+` and the Rust standard
-      library. Please use the explicit `*_sub` methods introduced above. In a
-      couple of releases from now, we want to introduce the operator again with
-      panicking overflow behaviour ([#858]).
+     `StdError::Overflow`. `StdError::DivideByZeroError` was added.
+  3. The `-` operator (`impl ops::Sub<Uint128> for Uint128`) was removed because
+     it returned a `StdResult` instead of panicking in the case of an overflow.
+     This behaviour was inconsistent with `+` and the Rust standard library.
+     Please use the explicit `*_sub` methods introduced above. In a couple of
+     releases from now, we want to introduce the operator again with panicking
+     overflow behaviour ([#858]).
 - cosmwasm-std: Replace `HumanAddr` with `String` in `BankQuery`, `StakingQuery`
   and `WasmQuery` query requests ([#802]).
 - cosmwasm-std: In staking query response types `Delegation`, `FullDelegation`
@@ -1556,7 +1576,8 @@ Some main points:
 
 All future Changelog entries will reference this base
 
-[unreleased]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.10...HEAD
+[unreleased]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.11...HEAD
+[1.1.11]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.10...v1.1.11
 [1.1.10]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.9...v1.1.10
 [1.1.9]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.8...v1.1.9
 [1.1.8]: https://github.com/CosmWasm/cosmwasm/compare/v1.1.6...v1.1.8
